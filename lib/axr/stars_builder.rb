@@ -54,6 +54,16 @@ module AjaxfulRating # :nodoc:
       end
     end
     
+    def grich_snippet_tag
+      html = ''
+      html << @template.content_tag(:div, class: 'item vcard') do
+        @template.concat @template.content_tag(:h4, "The Battery Guys - #{@rateable.title}".html_safe, class: 'fn org')
+        @template.concat @template.content_tag(:div, class: "stars_#{@rateable.rate_average.ceil} rating average"){ "#{@rateable.rate_average.ceil} star rating".html_safe }
+        @template.concat @template.content_tag(:div, class: 'em') { "Based on: <span class='count'>#{@rateable.rates.count} ratings".html_safe }
+      end.html_safe if @rateable.rate_average.ceil > 0
+      html.html_safe
+    end
+
     def ratings_tag
       stars = []
       width = (show_value / rateable.class.max_stars.to_f) * 100
@@ -108,8 +118,7 @@ module AjaxfulRating # :nodoc:
     end
 
     def wrapper_tag
-      @template.content_tag(:div, ratings_tag, :class => "ajaxful-rating-wrapper",
-        :id => rateable.wrapper_dom_id(options))
+      @template.content_tag(:div, grich_snippet_tag.html_safe + ratings_tag, class: "ajaxful-rating-wrapper hreview-aggregate", id: rateable.wrapper_dom_id(options))
     end
   end
 end
