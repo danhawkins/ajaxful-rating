@@ -55,14 +55,14 @@ module AjaxfulRating # :nodoc:
     end
     
     def grich_snippet_tag
-      html = ''
-      html << @template.content_tag(:div, class: 'item vcard') do
-        @template.concat @template.content_tag(:h4, "The Battery Guys - #{@rateable.title}".html_safe, class: 'fn org')
-        @template.concat @template.content_tag(:div, class: "stars_#{@rateable.rate_average.ceil} rating average"){ "#{@rateable.rate_average.ceil} star rating".html_safe }
-        @template.concat @template.content_tag(:div, class: 'em') { "Based on: <span class='count'>#{@rateable.rates.count} ratings".html_safe }
-      end.html_safe if @rateable.rate_average.ceil > 0
-      html.html_safe
+      html = @template.content_tag(:h4, "The Battery Guys - #{@rateable.title}".html_safe, class: 'fn org')
+      html << @template.content_tag(:div, class: "stars_#{@rateable.rate_average.ceil} rating average"){ "#{@rateable.rate_average.ceil} star rating".html_safe }
+      html << @template.content_tag(:div, class: 'em') { "Based on: <span class='count'>#{@rateable.rates.count}</span> ratings".html_safe }
+      return_html = ""
+      return_html = @template.content_tag(:div, html, class: 'item vcard').html_safe if @rateable.rate_average.ceil > 0
+      return_html
     end
+
 
     def ratings_tag
       stars = []
